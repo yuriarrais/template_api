@@ -64,7 +64,7 @@ def _digits_calculator(str_cpf, qnt_dig, peso):
     return mod
 
 
-def cpf_validation(str_cpf):
+def validation(str_cpf):
     # definir função para retira caracteres inválidos
     if _check_invalid_cpfs(str_cpf):
         return False
