@@ -16,3 +16,4 @@ class DBConnect:
         #                                 port=5432)
         # self.connection.autocommit = True
         # self.cursor = self.connection.cursor()
+
