@@ -8,12 +8,9 @@ def query_insert(table, attributes, parameters):
 
 
 def _make_param(attributes):
-    var = '('
-    for i in range(len(attributes)):
-        if i == len(attributes)-1:
-            var += '?)'
-        else:
-            var += '?, '
+    length = len(attributes)
+    var = '?, ' * length
+    var = f'({var[:-2]})'
     return var
 
 
@@ -26,4 +23,5 @@ def _make_attributes(attributes):
         else:
             var += i + ', '
         count += 1
+
     return var
