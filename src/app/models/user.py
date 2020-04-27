@@ -1,3 +1,5 @@
+from hashlib import md5
+
 
 class User:
     def __init__(self, f_name, l_name, email, pwd, uid=None):
@@ -38,3 +40,5 @@ class User:
         pass
 
 
+def hash_(pwd):
+    return md5(str(pwd).encode('utf-8')).hexdigest()
