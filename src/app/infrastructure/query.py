@@ -1,18 +1,19 @@
 from src.app.models import database as db
 
 
-def query_insert(atrib, param, table):
+def query_insert(table, attributes, parameters):
     prefix = f'INSERT INTO {table} '
-    var_param = _make_param(atrib)
-    var_attribute = _make_attributes(atrib)
-    sql = prefix + var_attribute + var_param
-    return sql
+    var_attributes = _make_attributes(attributes)
+    var_param = _make_param(attributes)
+    sql_statement = prefix + var_attributes + var_param
+
+    return sql_statement
 
 
-def _make_param(atrib):
+def _make_param(attributes):
     var = '('
-    for i in range(len(atrib)):
-        if i == len(atrib)-1:
+    for i in range(len(attributes)):
+        if i == len(attributes)-1:
             var += '?)'
         else:
             var += '?, '
