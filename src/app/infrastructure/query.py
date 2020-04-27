@@ -8,20 +8,14 @@ def query_insert(table, attributes, parameters):
 
 
 def _make_param(attributes):
+    #char = '?, ' * length
+    #var = f'({char[:-2]})'
+    char = '?'                                  # '?' sqlite3   ///  '%s' pgql
     length = len(attributes)
-    var = '?, ' * length
-    var = f'({var[:-2]})'
+    var = ', '.join([char] * length).join(["(", ")"])
     return var
 
 
 def _make_attributes(attributes):
-    var = '('
-    count = 0
-    for i in attributes:
-        if count == len(attributes)-1:
-            var += i + ') VALUES '
-        else:
-            var += i + ', '
-        count += 1
-
+    var = ', '.join(attributes).join(["(", ") VALUES "])
     return var
