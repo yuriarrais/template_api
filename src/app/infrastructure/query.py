@@ -1,6 +1,3 @@
-from src.app.models import database as db
-
-
 def query_insert(table, attributes, parameters):
     prefix = f'INSERT INTO {table} '
     var_attributes = _make_attributes(attributes)
