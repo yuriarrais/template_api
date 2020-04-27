@@ -16,4 +16,9 @@ def _make_param(attributes):
 
 def _make_attributes(attributes):
     var = ', '.join(attributes)
-    return f'({var}) VALUES'
+    return f'({var}) VALUES '
+
+
+def _make_parameters(parameters):
+    tuples = tuple(parameters)
+    return tuples
