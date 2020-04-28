@@ -1,25 +1,25 @@
 
 def query_insert(table, attributes, parameters):
-    var_attributes = _make_attributes(attributes)
-    var_param = _make_param(attributes)
-    sql_statement = f'INSERT INTO {table} {var_attributes} VALUES {var_param}'
+    attributes = _make_attrib_format(attributes)
+    parameterized = _make_param(attributes)
+    sql_statement = f'INSERT INTO {table} {attributes} VALUES {parameterized}'
     return sql_statement
 
 
 def query_search_all(table, attributes):
-    var_attributes = _make_attributes(attributes)
-    sql_statement = f'SELECT {var_attributes} FROM {table} '
+    attributes = _make_attrib_format(attributes)
+    sql_statement = f'SELECT {attributes} FROM {table} '
     return sql_statement
 
 
 def _make_param(attributes):
-    char = '?'                                  # '?' sqlite3   ///  '%s' pgql
+    char = '?'                         # '?' sqlite3   ///  '%s' pgql
     length = len(attributes)
     var = ', '.join([char] * length)
     return f'({var})'
 
 
-def _make_attributes(attributes):
+def _make_attrib_format(attributes):
     var = ', '.join(attributes)
     return f'({var})'
 
