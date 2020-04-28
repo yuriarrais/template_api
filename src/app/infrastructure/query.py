@@ -2,7 +2,7 @@
 def query_insert(table, attributes, parameters):
     parameterized = _make_param(attributes)
     var_attributes = _make_attrib_format(attributes)
-    return f'INSERT INTO {table} {var_attributes} VALUES {parameterized}'
+    return f'INSERT INTO {table} ({var_attributes}) VALUES {parameterized}'
 
 
 def query_search_all(table, attributes):
@@ -19,7 +19,7 @@ def _make_param(attributes):
 
 def _make_attrib_format(attributes):
     var = ', '.join(attributes)
-    return f'({var})'
+    return var
 
 
 def _make_parameters(parameters):
