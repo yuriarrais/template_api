@@ -1,16 +1,13 @@
 
-
 def query_insert(table, attributes, parameters):
-    prefix = f'INSERT INTO {table} '
     var_attributes = _make_attributes(attributes)
     var_param = _make_param(attributes)
-    sql_statement = prefix + var_attributes + var_param
-
+    sql_statement = f'INSERT INTO {table} {var_attributes} VALUES {var_param}'
     return sql_statement
 
 
 def query_search_all(table, attributes):
-    var_attributes = _make_attributes(attributes)[1:-8]
+    var_attributes = _make_attributes(attributes)
     sql_statement = f'SELECT {var_attributes} FROM {table} '
     return sql_statement
 
@@ -24,7 +21,7 @@ def _make_param(attributes):
 
 def _make_attributes(attributes):
     var = ', '.join(attributes)
-    return f'({var}) VALUES '
+    return f'({var})'
 
 
 def _make_parameters(parameters):
