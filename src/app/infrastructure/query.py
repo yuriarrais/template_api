@@ -1,27 +1,13 @@
-
-def query_insert(table, attributes, parameters):
-    parameterized = _make_param(attributes)
-    var_attributes = _make_attrib_format(attributes)
-    return f'INSERT INTO {table} ({var_attributes}) VALUES {parameterized}'
+from .operations import builder_sql as _builder_sql
+from .database import DBConnect
 
 
-def query_search_all(table, attributes):
-    var_attributes = _make_attrib_format(attributes)
-    return f'SELECT {var_attributes} FROM {table} '
+def execute(sql, parameters=None):
+    string_sql = _builder_sql(sql[0], sql[1], sql[2], sql[3]) \
+        if len(sql) == 4 else _builder_sql(sql[0], sql[1], sql[2])
+    db = DBConnect().cursor
+    db.execute(string_sql, parameters) if parameters else db.execute(string_sql)
+    return 'O peração realizada com sucesso.' if sql[0] != 'search_one' and sql[0] != 'search_all' \
+        else db.fetchone() if sql[0] == 'search_one' else db.fetchall()
 
-
-def _make_param(attributes):
-    char = '?'                         # '?' sqlite3   ///  '%s' pgql
-    length = len(attributes)
-    var = ', '.join([char] * length)
-    return f'({var})'
-
-
-def _make_attrib_format(attributes):
-    var = ', '.join(attributes)
-    return var
-
-
-def _make_parameters(parameters):
-    tuples = tuple(parameters)
-    return tuples
+# Falta implementar para que os metodos sejam devolvidos como objetos e a msg seja do arquivo de strings

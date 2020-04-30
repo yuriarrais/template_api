@@ -5,7 +5,7 @@ import sqlite3
 class DBConnect:
     def __init__(self):
         # Connection to SQLite
-        self.connection = sqlite3.connect('database.db')
+        self.connection = sqlite3.connect('database.db', isolation_level=None)
         self.cursor = self.connection.cursor()
 
         # Connection to PostgreSQL

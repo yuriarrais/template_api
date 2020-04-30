@@ -1,3 +1,4 @@
+from src.app.infrastructure.query import execute
 from hashlib import md5
 
 
@@ -18,6 +19,7 @@ class User:
             'pwd': self.pwd
         }
 
+    @staticmethod
     def json2obj(user_json):
         return User(
             user_json["f_name"],
@@ -27,18 +29,32 @@ class User:
             user_json["uid"]
         )
 
-    def search_all_users(self):
-        pass
+    @staticmethod
+    def search_uid(uid):
+        sql = ['search_one', 'users', ['*'], 'uid']
+        parameters = (uid,)
+        return execute(sql, parameters)
 
-    def search_uid_user(self, uid):
-        pass
+    @staticmethod
+    def search_all():
+        sql = ['search_all', 'users', ['*']]
+        return execute(sql)
 
-    def save_user(self, obj_user):
-        pass
+    def save(self):
+        if self.uid:
+            sql = ['update', 'users', ['f_name', 'l_name', 'email', 'pwd'], 'uid']
+            parameters = (self.f_name, self.l_name, self.email, _hash(self.pwd), self.uid)
+        else:
+            sql = ['insert', 'users', ['f_name', 'l_name', 'email', 'pwd']]
+            parameters = (self.f_name, self.l_name, self.email, _hash(self.pwd))
+        return execute(sql, parameters)
 
-    def delete_user(self, uid):
-        pass
+    @staticmethod
+    def delete(uid):
+        sql = ['delete', 'users', 'uid']
+        parameters = (uid,)
+        return execute(sql, parameters)
 
 
-def hash_(pwd):
+def _hash(pwd):
     return md5(str(pwd).encode('utf-8')).hexdigest()
