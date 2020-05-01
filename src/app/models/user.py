@@ -20,7 +20,7 @@ class User:
         }
 
     @staticmethod
-    def json2obj(user_json):
+    def json_2_obj(user_json):
         return User(
             user_json["f_name"],
             user_json["l_name"],
@@ -33,12 +33,14 @@ class User:
     def search_uid(uid):
         sql = ['search_one', 'users', ['*'], 'uid']
         parameters = (uid,)
-        return execute(sql, parameters)
+        row = execute(sql, parameters)
+        return _row_2_obj(row) if row else None
 
     @staticmethod
     def search_all():
         sql = ['search_all', 'users', ['*']]
-        return execute(sql)
+        rows = execute(sql)
+        return list(map(_row_2_obj, rows)) if rows else None
 
     def save(self):
         if self.uid:
@@ -58,3 +60,7 @@ class User:
 
 def _hash(pwd):
     return md5(str(pwd).encode('utf-8')).hexdigest()
+
+
+def _row_2_obj(row):
+    return User(row[1], row[2], row[3], row[4], row[0])
