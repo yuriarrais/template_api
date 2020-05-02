@@ -21,13 +21,14 @@ class User:
 
     @staticmethod
     def json_2_obj(user_json):
-        return User(
-            user_json["f_name"],
-            user_json["l_name"],
-            user_json["email"],
-            user_json["pwd"],
-            user_json["uid"]
-        )
+
+        param = [user_json["f_name"],
+                 user_json["l_name"],
+                 user_json["email"],
+                 user_json["pwd"]]
+        if 'uid' in user_json:
+            param.append(user_json["uid"])
+        return User(*param)
 
     @staticmethod
     def search_uid(uid):
