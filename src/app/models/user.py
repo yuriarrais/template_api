@@ -1,4 +1,5 @@
 from src.app.infrastructure.query import execute
+from src.config.locales import language as lang
 from hashlib import md5
 
 
@@ -21,18 +22,20 @@ class User:
 
     @staticmethod
     def json_2_obj(user_json):
-        return User(user_json["f_name"],
-                    user_json["l_name"],
-                    user_json["email"],
-                    user_json["pwd"],
-                    user_json["uid"] if 'uid' in user_json else None)
+        return User(
+            user_json["f_name"],
+            user_json["l_name"],
+            user_json["email"],
+            user_json["pwd"],
+            user_json["uid"] if 'uid' in user_json else None
+        )
 
     @staticmethod
     def search_uid(uid):
         sql = ['search_one', 'users', ['*'], 'uid']
         parameters = (uid,)
-        row = execute(sql, parameters)
-        return _row_2_obj(row) if row else None
+        rows = execute(sql, parameters)
+        return list(map(_row_2_obj, rows))[0] if rows else None
 
     @staticmethod
     def search_all():
@@ -47,13 +50,17 @@ class User:
         else:
             sql = ['insert', 'users', ['f_name', 'l_name', 'email', 'pwd']]
             parameters = (self.f_name, self.l_name, self.email, _hash(self.pwd))
-        return execute(sql, parameters)
+        execute(sql, parameters)
+        return User(self.f_name, self.l_name, self.email, _hash(self.pwd), self.uid)
 
     @staticmethod
     def delete(uid):
         sql = ['delete', 'users', 'uid']
         parameters = (uid,)
-        return execute(sql, parameters)
+        sql_response = User.search_uid(uid)
+        if sql_response:
+            execute(sql, parameters)
+        return sql_response
 
 
 def _hash(pwd):

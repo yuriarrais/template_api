@@ -1,14 +1,17 @@
 from .operations import builder_sql as _builder_sql
+from src.config.parameters import status_ok
 from .database import DBConnect
 
 
-def execute(sql, parameters=None):
+function_type = ['search_one', 'search_all']
+
+
+def execute(sql, parameters=''):
     string_sql = _builder_sql(*sql)
     db = DBConnect().cursor
-    db.execute(string_sql, parameters) if parameters else db.execute(string_sql)
-    sql_response = 'O peração realizada com sucesso.' if sql[0] != 'search_one' and sql[0] != 'search_all' \
-        else db.fetchone() if sql[0] == 'search_one' else db.fetchall()
+    db.execute(string_sql, parameters)
+    sql_response = db.fetchall() if sql[0] in function_type else None
     db.close()
     return sql_response
 
-# Falta implementar para que os metodos sejam devolvidos como objetos e a msg seja do arquivo de strings
+# Falta implementar para que a msg seja do arquivo de strings
