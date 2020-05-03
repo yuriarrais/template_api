@@ -1,5 +1,4 @@
 from src.app.infrastructure.query import execute
-from src.config.locales import language as lang
 from hashlib import md5
 
 
@@ -11,24 +10,9 @@ class User:
         self.email = email
         self.pwd = pwd
 
-    def to_json(self):
-        return {
-            'uid': self.uid,
-            'f_name': self.f_name,
-            'l_name': self.l_name,
-            'email': self.email,
-            'pwd': self.pwd
-        }
-
-    @staticmethod
-    def json_2_obj(user_json):
-        return User(
-            user_json["f_name"],
-            user_json["l_name"],
-            user_json["email"],
-            user_json["pwd"],
-            user_json["uid"] if 'uid' in user_json else None
-        )
+    @property
+    def full_name(self):
+        return f'{self.f_name} {self.l_name}'
 
     @staticmethod
     def search_uid(uid):
@@ -50,8 +34,8 @@ class User:
         else:
             sql = ['insert', 'users', ['f_name', 'l_name', 'email', 'pwd']]
             parameters = (self.f_name, self.l_name, self.email, _hash(self.pwd))
-        execute(sql, parameters)
-        return User(self.f_name, self.l_name, self.email, _hash(self.pwd), self.uid)
+        last_row_id = execute(sql, parameters)
+        return User(self.f_name, self.l_name, self.email, _hash(self.pwd), last_row_id if last_row_id else self.uid)
 
     @staticmethod
     def delete(uid):
@@ -61,6 +45,25 @@ class User:
         if sql_response:
             execute(sql, parameters)
         return sql_response
+
+    def to_json(self):
+        return {
+            'uid': self.uid,
+            'f_name': self.f_name,
+            'l_name': self.l_name,
+            'email': self.email,
+            'pwd': self.pwd
+        }
+
+    @staticmethod
+    def json_2_obj(user_json):
+        return User(
+            user_json["f_name"],
+            user_json["l_name"],
+            user_json["email"],
+            user_json["pwd"],
+            user_json["uid"] if 'uid' in user_json else None
+        )
 
 
 def _hash(pwd):
