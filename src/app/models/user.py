@@ -35,7 +35,13 @@ class User:
             sql = ['insert', 'users', ['f_name', 'l_name', 'email', 'pwd']]
             parameters = (self.f_name, self.l_name, self.email, _hash(self.pwd))
         last_row_id = execute(sql, parameters)
-        return User(self.f_name, self.l_name, self.email, _hash(self.pwd), last_row_id if last_row_id else self.uid)
+        return User(
+            self.f_name,
+            self.l_name,
+            self.email,
+            _hash(self.pwd),
+            last_row_id if last_row_id else self.uid
+        )
 
     @staticmethod
     def delete(uid):
