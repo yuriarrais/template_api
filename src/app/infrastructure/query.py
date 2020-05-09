@@ -12,6 +12,3 @@ def execute(sql, parameters=''):
     sql_response = db.fetchall() if sql[0] in function_type else db.lastrowid
     db.close()
     return sql_response
-
-
-# Falta implementar para que a msg seja do arquivo de strings

@@ -4,7 +4,7 @@ import sqlite3
 
 class DBConnect:
     def __init__(self):
-        # Connection to SQLite
+        # Connection to SQLite, isolation_level=None set autocommit
         self.connection = sqlite3.connect('database.db', isolation_level=None)
         self.cursor = self.connection.cursor()
 
