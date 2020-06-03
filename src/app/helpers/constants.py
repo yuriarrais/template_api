@@ -1,2 +1,3 @@
-def no_content():
-    return '', 204
+
+def no_content(status):
+    return '', status
