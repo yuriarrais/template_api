@@ -2,14 +2,18 @@ from src.app.models.user import User
 from src.main import app
 from flask import jsonify, request
 from src.config.locales import language as lang
+from src.app.helpers.constants import no_content
 
 
 @app.route('/user/<int:uid>', methods=['GET'])
-def user(uid):
-    user = User.search_uid(uid)
-    if user:
-        return jsonify(user.to_json()), 200
-    return lang.msg("not_found"), 404
+def search_user(uid):
+    try:
+        user = User.search_uid(uid)
+        if user:
+            return jsonify(user.to_json()), 200
+        return no_content()
+    except Exception as e:
+        return f'Cod: {type(e).__name__}\nMsg:{e}'
 
 
 @app.route('/user/', methods=['GET'])
