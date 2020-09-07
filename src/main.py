@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-# from flask_cors import CORS
+from flask_cors import CORS
 # from helpers.session_helper import *
 # from helpers.constants import *
 import os
@@ -9,7 +9,7 @@ app.secret_key = os.urandom(24)
 app.config['JSON_SORT_KEYS'] = False
 
 
-# CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True)
 
 
 @app.route('/')
@@ -20,4 +20,4 @@ def index():
 from src.app.controllers.user import *
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='192.168.0.110')
