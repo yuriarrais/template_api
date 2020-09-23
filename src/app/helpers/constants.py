@@ -1,3 +1,2 @@
 
-def no_content(status):
-    return '', status
+no_content = '{"error": "no content"}'

@@ -68,7 +68,7 @@ class User:
             user_json["l_name"],
             user_json["email"],
             user_json["pwd"],
-            user_json["uid"] if 'uid' in user_json else None
+            user_json["uid"] if 'uid' in user_json and user_json["uid"] != "" else None
         )
 
 
